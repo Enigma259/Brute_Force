@@ -6,7 +6,8 @@ namespace Brute_Force
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Hacker hacker = new Hacker(4, 8);
+            hacker.HackZipFile_2();
         }
     }
 }
