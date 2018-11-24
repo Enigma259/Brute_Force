@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ionic.Zip;
+using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 
@@ -7,19 +8,21 @@ namespace Brute_Force
     /// <summary>
     /// 
     /// </summary>
-    public class Hacker
+    public class Hacker_1
     {
         private List<string> letters;
         private int minimum_letters;
         private int maximum_letters;
         private List<int> index_Letters;
+        private string file_path;
+        private string destination_path;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="minimum_letters"></param>
         /// <param name="maximum_letters"></param>
-        public Hacker(int minimum_letters, int maximum_letters)
+        public Hacker_1(int minimum_letters, int maximum_letters)
         {
             if (minimum_letters < 0)
             {
@@ -44,7 +47,6 @@ namespace Brute_Force
 
             this.letters = new List<string>();
             this.index_Letters = new List<int>();
-
 
             SetLetters();
             SetIndexLetters();
@@ -165,6 +167,24 @@ namespace Brute_Force
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="filepath"></param>
+        public void SetFilePath(string file_path)
+        {
+            this.file_path = file_path;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="destination"></param>
+        public void SetDestinationPath(string destination)
+        {
+            this.destination_path = destination;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void IncreaseIndexLetter()
         {
             int index;
@@ -242,6 +262,25 @@ namespace Brute_Force
         /// <summary>
         /// 
         /// </summary>
+        /// <returns></returns>
+        public string GetFilePath()
+        {
+            return file_path;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string GetDestinationPath()
+        {
+            return destination_path;
+        }
+
+        /*
+        /// <summary>
+        /// 
+        /// </summary>
         public void HackZipFile_1()
         {
             string result = "";
@@ -289,13 +328,14 @@ namespace Brute_Force
             Console.ReadLine();
             Console.Read();
         }
+        */
 
         public void HackZipFile_2()
         {
             string result = "";
             string current_password = PasswordGuess();
             bool found_password = false;
-            string zipFile = @"D:\Cloud\OneDrive - University College Nordjylland\Opgaver\UCN 2.0\2. Semester\Security\Session 2\Passwords.zip";
+            string zipFile = @GetFilePath();
             string targetDirectory = @"D:\Cloud\OneDrive - University College Nordjylland\Opgaver\UCN 2.0\2. Semester\Security";
 
             Console.WriteLine("Hello World");
@@ -336,8 +376,54 @@ namespace Brute_Force
 
             Console.ReadLine();
             Console.Read();
+        }
 
-            
+        public void HackZipFile_3(string file_path, string destination_path)
+        {
+            string result = "";
+            string current_password;
+            bool found_password = false;
+            SetFilePath(file_path);
+            SetDestinationPath(destination_path);
+
+            Console.WriteLine("Start cracking zip file.");
+            Console.WriteLine("Source: " + GetFilePath());
+            Console.WriteLine("Destination: " + GetDestinationPath());
+
+
+            while (found_password.Equals(false) && GetIndexLetters()[0] != 0)
+            {
+                current_password = PasswordGuess();
+
+                try
+                {
+                    using (Ionic.Zip.ZipFile zip = Ionic.Zip.ZipFile.Read(GetFilePath()))
+                    {
+                        zip.Password = current_password;
+                        zip.ExtractAll(GetDestinationPath(), ExtractExistingFileAction.OverwriteSilently);
+                    }
+                }
+                
+                catch(BadPasswordException bad_password)
+                {
+                    Console.WriteLine(bad_password.Message);
+                }
+
+                if(result != "")
+                {
+                    found_password = true;
+                }
+            }
+
+            if(found_password)
+            {
+                Console.WriteLine("The Password for this zipfile: " + result);
+            }
+
+            else
+            {
+                Console.WriteLine("Could not guess the password.");
+            }
         }
 
         /// <summary>
@@ -378,5 +464,7 @@ namespace Brute_Force
             IncreaseIndexLetter();
             return result;
         }
+
+
     }
 }

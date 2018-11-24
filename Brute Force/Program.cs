@@ -6,8 +6,10 @@ namespace Brute_Force
     {
         static void Main(string[] args)
         {
-            Hacker hacker = new Hacker(4, 8);
-            hacker.HackZipFile_2();
+            int minimum_letters = 4;
+            int maximum_letters = 8;
+            Hacker_1 hacker = new Hacker_1(minimum_letters, maximum_letters);
+            hacker.HackZipFile_3(@"E:\Github\Brute_Force\Brute Force\FileVault.zip", @"E:\Results");
         }
     }
 }

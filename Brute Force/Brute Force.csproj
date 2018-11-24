@@ -4,6 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>Brute_Force</RootNamespace>
+    <StartupObject>Brute_Force.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
