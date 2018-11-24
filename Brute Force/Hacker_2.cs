@@ -1,80 +1,115 @@
-﻿using Ionic.Zip;
+﻿using SevenZip;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Brute_Force
 {
     class Hacker_2
     {
-        private readonly List<char> _charList;
-        private readonly int[] _currentPassword;
-        private readonly string _endPassword;
-
-        public Hacker_2(List<char> charList, string startPassword, string endPassword)
+        static void Main(string[] args)
         {
-            _charList = charList;
-            _endPassword = endPassword;
+        //make sure all hashes get resolved to a string that equals uppercase or lowercase otherwise it will not work 
 
-            var passwordLength = Math.Max(startPassword.Length, endPassword.Length);
+        // string Hash = "81DC9BDB52D04DC20036DBD8313ED055"; //1234
+        // string Hash = "C0CD38F67DD1D4DA8D8A18FE6F4C502F".ToUpper(); //bean1
+        // string Hash = "093ec71f562ba6cbf5825b7c9a48f19e".ToUpper(); //daddy 
+        //  string Hash = "fcea920f7412b5da7be0cf42b8c93759".ToUpper(); //1234567
+        // string Hash = "67881381dbc68d4761230131ae0008f7".ToUpper(); //babygirl
+        // string Hash = "E10ADC3949BA59ABBE56E057F20F883E"; //123456
 
-            _currentPassword = startPassword.Select(c => _charList.IndexOf(c)).ToArray();
+        Here: //a return point
 
-            while (_currentPassword.Length != passwordLength)
+            string Hash = "";
+            Console.Write("Enter Your MD5 hash : ");
+            Hash = Console.ReadLine().ToUpper();
+
+            if (!string.IsNullOrEmpty(Hash))
             {
-                _currentPassword = _currentPassword.Concat(new[] { 0 }).ToArray();
+                Console.WriteLine("Valid MD5 Hash Value Ok");
             }
-        }
-
-        public string CalculatePassword()
-        {
-            while (true)
+            else
             {
-                var password = GetPasswordAsString();
+                Console.WriteLine("Not a Valid MD5 Hash Value !!!");
+                goto Here;
+            }
 
-                try
+            string passwordList = "";
+            Console.WriteLine("Enter the Password List File Name :: example (rockyou.txt)");
+            passwordList = Console.ReadLine();
+
+            if (File.Exists(passwordList))
+            {
+                Console.WriteLine("Password List Found Ok");
+            }
+            else
+            {
+                Console.WriteLine("Could Not Find the Password List");
+                goto Here;
+            }
+
+            //  Hash = "e10adc3949ba59abbe56e057f20f883e"; //123456
+            string Pass = "";
+            int counter = 0;
+            bool closeLoop = true; //this ends the loop after a password is found
+
+
+
+            //open this file that will be save in your bin directory
+            using (StreamReader file = new StreamReader(passwordList))
+            {
+
+                //this will run untill closeloop = false or the end of the file 
+                while (closeLoop == true && (Pass = file.ReadLine()) != null)
                 {
-                    if (ZipFile.CheckZipPassword(Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\FileVault.zip", password))
+                    //this compares the output md5hash to the hash entered above and closes while loop
+                    if (Md5Hash(Pass) == Hash)
                     {
-                        return password;
+
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine(Pass);
+                        Console.ForegroundColor = ConsoleColor.Green;
+
+                        Console.WriteLine("Cracked Hash = " + Pass + "\n\r" + Md5Hash(Pass));
+
+                        Console.ResetColor();
+                        Console.ReadKey();
+                        file.Close();
+                        closeLoop = false;
                     }
+                    else
+                    {
+                        //if no match just write out the password that was tried
+                        Console.WriteLine(Pass);
+                    }
+                    counter++;
+                    Console.Title = "Current Password Count: " + counter.ToString();
+                    Thread.Sleep(10);
                 }
-                catch (BadCrcException)
-                {
-                    // For some reason, sometimes a BadCRCException is thrown.
-                    // I have never had it thrown on the real password,
-                    // but this may be an issue for that.
-                    // My best guess is that the speed of access the file,
-                    // or perhaps accessing it from multiple threads, is the issue
-                }
+                file.Close();
+                Console.ReadKey();
 
-                if (password == _endPassword) { break; }
-
-                CalculateNextPassword();
             }
-
-            return null;
         }
-
-        private void CalculateNextPassword()
+        //this takes the file as an input string and outputs a md5 hash
+        public static string Md5Hash(string inputString)
         {
-            for (var index = _currentPassword.Length - 1; index >= 0; index--)
+            StringBuilder sb = new StringBuilder();
+            MD5CryptoServiceProvider MD5Provider = new MD5CryptoServiceProvider();
+            byte[] bytes = MD5Provider.ComputeHash(new UTF8Encoding().GetBytes(inputString));
+
+            for (int i = 0; i < bytes.Length; i++)
             {
-                if (_currentPassword[index] == _charList.Count - 1)
-                {
-                    _currentPassword[index] = 0;
-                    continue;
-                }
+                sb.Append(bytes[i].ToString("X2"));
 
-                _currentPassword[index]++;
-                break;
             }
-        }
-
-        private string GetPasswordAsString()
-        {
-            return new string(_currentPassword.Select(i => _charList[i]).ToArray());
+            return sb.ToString();
         }
     }
 }

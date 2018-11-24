@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="DotNetZip" Version="1.11.0" />
+    <PackageReference Include="SevenZip" Version="4.12.1" />
   </ItemGroup>
 
 </Project>

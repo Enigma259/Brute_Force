@@ -1,7 +1,6 @@
 ﻿using Ionic.Zip;
 using System;
 using System.Collections.Generic;
-using System.IO.Compression;
 
 namespace Brute_Force
 {
@@ -220,7 +219,7 @@ namespace Brute_Force
                     index++;
                 }
             }
-            
+
         }
 
         /// <summary>
@@ -350,13 +349,12 @@ namespace Brute_Force
                     using (Ionic.Zip.ZipFile zip = Ionic.Zip.ZipFile.Read(zipFile))
                     {
                         zip.Password = current_password;
-                        zip.ExtractAll(targetDirectory, Ionic.Zip.ExtractExistingFileAction.DoNotOverwrite);
+                        zip.ExtractAll(targetDirectory, ExtractExistingFileAction.DoNotOverwrite);
                         result = current_password;
-                        found_password = true;
                     }
                 }
 
-                catch(Exception exception)
+                catch (Exception exception)
                 {
                     Console.WriteLine(exception.Message);
                     current_password = PasswordGuess();
@@ -385,6 +383,7 @@ namespace Brute_Force
             bool found_password = false;
             SetFilePath(file_path);
             SetDestinationPath(destination_path);
+            ZipFile zip = ZipFile.Read(GetFilePath());
 
             Console.WriteLine("Start cracking zip file.");
             Console.WriteLine("Source: " + GetFilePath());
@@ -397,25 +396,22 @@ namespace Brute_Force
 
                 try
                 {
-                    using (Ionic.Zip.ZipFile zip = Ionic.Zip.ZipFile.Read(GetFilePath()))
-                    {
-                        zip.Password = current_password;
-                        zip.ExtractAll(GetDestinationPath(), ExtractExistingFileAction.OverwriteSilently);
-                    }
+                    zip.Password = current_password;
+                    zip.ExtractAll(GetDestinationPath(), ExtractExistingFileAction.OverwriteSilently);
                 }
-                
-                catch(BadPasswordException bad_password)
+
+                catch (BadPasswordException bad_password)
                 {
                     Console.WriteLine(bad_password.Message);
                 }
 
-                if(result != "")
+                if (result != "")
                 {
                     found_password = true;
                 }
             }
 
-            if(found_password)
+            if (found_password)
             {
                 Console.WriteLine("The Password for this zipfile: " + result);
             }
@@ -445,7 +441,7 @@ namespace Brute_Force
         {
             string result = "";
 
-            if(GetIndexLetters()[0] > 0)
+            if (GetIndexLetters()[0] > 0)
             {
                 foreach (int current_index in GetIndexLetters())
                 {
