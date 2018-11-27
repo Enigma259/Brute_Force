@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Brute_Force
 {
     /// <summary>
-    /// 
+    /// This is the class Hacker_1.
     /// </summary>
     public class Hacker_1
     {
@@ -17,7 +17,7 @@ namespace Brute_Force
         private string destination_path;
 
         /// <summary>
-        /// 
+        /// This is the constructor for the class Hacker_1.
         /// </summary>
         /// <param name="minimum_letters"></param>
         /// <param name="maximum_letters"></param>
@@ -52,7 +52,7 @@ namespace Brute_Force
         }
 
         /// <summary>
-        /// 
+        /// This method changes the value in the instance minimum_letters.
         /// </summary>
         /// <param name="minimum_letters"></param>
         public void SetMinimumLetters(int minimum_letters)
@@ -61,7 +61,7 @@ namespace Brute_Force
         }
 
         /// <summary>
-        /// 
+        /// This method changes the value in the instance maximum_letters.
         /// </summary>
         /// <param name="maximum_letters"></param>
         public void SetMaximumLetters(int maximum_letters)
@@ -70,7 +70,7 @@ namespace Brute_Force
         }
 
         /// <summary>
-        /// 
+        /// This method fills in the symbols that are used to create a password.
         /// </summary>
         public void SetLetters()
         {
@@ -145,7 +145,7 @@ namespace Brute_Force
         }
 
         /// <summary>
-        /// 
+        /// This method set the index numbers so it can be used to create a password from the list Letters.
         /// </summary>
         public void SetIndexLetters()
         {
@@ -164,7 +164,7 @@ namespace Brute_Force
         }
 
         /// <summary>
-        /// 
+        /// This method sets the source path of the zip file.
         /// </summary>
         /// <param name="filepath"></param>
         public void SetFilePath(string file_path)
@@ -173,7 +173,7 @@ namespace Brute_Force
         }
 
         /// <summary>
-        /// 
+        /// This method sets the destination path of the zi file.
         /// </summary>
         /// <param name="destination"></param>
         public void SetDestinationPath(string destination)
@@ -182,7 +182,7 @@ namespace Brute_Force
         }
 
         /// <summary>
-        /// 
+        /// This method increase a number in the list index_letter.
         /// </summary>
         public void IncreaseIndexLetter()
         {
@@ -223,7 +223,7 @@ namespace Brute_Force
         }
 
         /// <summary>
-        /// 
+        /// This method returns the value in the instance minimum_letters.
         /// </summary>
         /// <returns></returns>
         public int GetMinimumLetters()
@@ -232,7 +232,7 @@ namespace Brute_Force
         }
 
         /// <summary>
-        /// 
+        /// This method returns the value in the instance maximum_letters.
         /// </summary>
         /// <returns></returns>
         public int GetMaximumLetters()
@@ -241,7 +241,7 @@ namespace Brute_Force
         }
 
         /// <summary>
-        /// 
+        /// This method returns the list Index_letters.
         /// </summary>
         /// <returns></returns>
         public List<int> GetIndexLetters()
@@ -250,7 +250,7 @@ namespace Brute_Force
         }
 
         /// <summary>
-        /// 
+        /// This method returns the list letters.
         /// </summary>
         /// <returns></returns>
         public List<string> GetLetters()
@@ -259,7 +259,7 @@ namespace Brute_Force
         }
 
         /// <summary>
-        /// 
+        /// This method returns the value in the instance file_path.
         /// </summary>
         /// <returns></returns>
         public string GetFilePath()
@@ -268,7 +268,7 @@ namespace Brute_Force
         }
 
         /// <summary>
-        /// 
+        /// This method returns the value in the instance destination_path.
         /// </summary>
         /// <returns></returns>
         public string GetDestinationPath()
@@ -329,6 +329,9 @@ namespace Brute_Force
         }
         */
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void HackZipFile_2()
         {
             string result = "";
@@ -376,6 +379,11 @@ namespace Brute_Force
             Console.Read();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="file_path"></param>
+        /// <param name="destination_path"></param>
         public void HackZipFile_3(string file_path, string destination_path)
         {
             string result = "";
@@ -434,7 +442,7 @@ namespace Brute_Force
         }
 
         /// <summary>
-        /// 
+        /// This method creates a password using the numbers in the list index_letters and get the specific values from the list letters.
         /// </summary>
         /// <returns></returns>
         public string PasswordGuess()
