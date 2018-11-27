@@ -334,7 +334,7 @@ namespace Brute_Force
             string result = "";
             string current_password = PasswordGuess();
             bool found_password = false;
-            string zipFile = @GetFilePath();
+            string zipFile = GetFilePath();
             string targetDirectory = @"D:\Cloud\OneDrive - University College Nordjylland\Opgaver\UCN 2.0\2. Semester\Security";
 
             Console.WriteLine("Hello World");
@@ -383,10 +383,10 @@ namespace Brute_Force
             bool found_password = false;
             SetFilePath(file_path);
             SetDestinationPath(destination_path);
-            ZipFile zip = ZipFile.Read(GetFilePath());
+            ZipFile zip = ZipFile.Read(@GetFilePath());
 
             Console.WriteLine("Start cracking zip file.");
-            Console.WriteLine("Source: " + GetFilePath());
+            Console.WriteLine("Source: " + @GetFilePath());
             Console.WriteLine("Destination: " + GetDestinationPath());
 
 
